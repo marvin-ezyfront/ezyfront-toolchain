@@ -13,9 +13,9 @@ template:
     - sample-repo
   info:
     git url: >-
-      [https://github.com/open-toolchain/simple-toolchain-hosted](https://github.com/open-toolchain/simple-toolchain-hosted)
+      [https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted)
     git branch: >-
-      [master](https://github.com/open-toolchain/simple-toolchain-hosted/tree/master)
+      [master](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted/tree/master)
 toolchain:
   name: 'simple-toolchain-{{timestamp}}'
   template:
