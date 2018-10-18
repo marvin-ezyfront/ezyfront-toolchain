@@ -1,0 +1,58 @@
+version: '2'
+messages:
+  $i18n: locales.yml
+template:
+  name:
+    $ref: "#/messages/template.name"
+  description:
+    $ref: "#/messages/template.description"
+  header: '![](toolchain.svg?localize)'
+  icon: icon.svg
+  required:
+    - war-build
+    - war-repo
+  info:
+    git url: >-
+      [https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted)
+    git branch: >-
+      [master](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted/tree/master)
+toolchain:
+  name: 'espace-application-{{timestamp}}'
+  template:
+    getting_started:
+      $ref: "#/messages/template.gettingStarted"
+services:
+  war-repo:
+    service_id: hostedgit
+    parameters:
+      repo_name: '{{toolchain.name}}'
+      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/generic-api-oauth'
+      type: clone
+      has_issues: true
+      enable_traceability: true
+  war-build:
+    service_id: pipeline
+    parameters:
+      services:
+        - war-repo
+      name: '{{services.war-repo.parameters.repo_name}}'
+      ui-pipeline: true
+      configuration:
+        content:
+          $text: pipeline.yml
+        env:
+          WAR_REPO: war-repo
+          CF_APP_NAME: '{{form.pipeline.parameters.prod-app-name}}'
+          PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
+          PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
+          PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
+          API_KEY: '{{form.pipeline.parameters.api-key}}'
+        execute: true
+  webide:
+    service_id: orion
+form:
+  pipeline:
+    parameters:
+      prod-app-name: '{{services.war-repo.parameters.repo_name}}'
+    schema:
+      $ref: deploy.json
