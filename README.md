@@ -2,7 +2,7 @@
 
 ### Continuously deliver a Cloud Foundry app with IBM hosted repos and issue tracking
 
-Application java War pour déploiement sur IBM cloud.
+This Hello World application uses Node.js and includes a DevOps toolchain that is preconfigured for continuous delivery, source control, issue tracking, and online editing.
 
 ### To get started, click **Create toolchain**.
 
