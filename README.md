@@ -6,7 +6,7 @@ Application java War pour déploiement sur IBM cloud.
 
 ### To get started, click **Create toolchain**.
 
-[![Deploy To Bluemix](https://console.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.bluemix.net/devops/setup/deploy/?repository=https%3A//git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted.git)
+[![Deploy To Bluemix](https://console.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.bluemix.net/devops/setup/deploy/?repository=https%3A//git.eu-de.bluemix.net/toolchain/war-toolchain-hosted)
 
 ---
 ### Learn more
