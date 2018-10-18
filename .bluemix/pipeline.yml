@@ -3,8 +3,8 @@ stages:
 - name: BUILD
   inputs:
   - type: git
-    branch: integration
-    service: ${WAR_REPO}
+    branch: master
+    service: ${SAMPLE_REPO}
   triggers:
   - type: commit
   jobs:

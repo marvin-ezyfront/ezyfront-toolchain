@@ -9,39 +9,39 @@ template:
   header: '![](toolchain.svg?localize)'
   icon: icon.svg
   required:
-    - war-build
-    - war-repo
+    - sample-build
+    - sample-repo
   info:
     git url: >-
-      [https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted)
+      [https://github.com/open-toolchain/simple-toolchain-hosted](https://github.com/open-toolchain/simple-toolchain-hosted)
     git branch: >-
-      [master](https://git.eu-de.bluemix.net/ezyfront/war-toolchain-hosted/tree/master)
+      [master](https://github.com/open-toolchain/simple-toolchain-hosted/tree/master)
 toolchain:
-  name: 'espace-application-{{timestamp}}'
+  name: 'simple-toolchain-{{timestamp}}'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted"
 services:
-  war-repo:
+  sample-repo:
     service_id: hostedgit
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/generic-api-oauth'
+      repo_url: 'https://github.com/open-toolchain/node-hello-world'
       type: clone
       has_issues: true
       enable_traceability: true
-  war-build:
+  sample-build:
     service_id: pipeline
     parameters:
       services:
-        - war-repo
-      name: '{{services.war-repo.parameters.repo_name}}'
+        - sample-repo
+      name: '{{services.sample-repo.parameters.repo_name}}'
       ui-pipeline: true
       configuration:
         content:
           $text: pipeline.yml
         env:
-          WAR_REPO: war-repo
+          SAMPLE_REPO: sample-repo
           CF_APP_NAME: '{{form.pipeline.parameters.prod-app-name}}'
           PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
           PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
@@ -53,6 +53,6 @@ services:
 form:
   pipeline:
     parameters:
-      prod-app-name: '{{services.war-repo.parameters.repo_name}}'
+      prod-app-name: '{{services.sample-repo.parameters.repo_name}}'
     schema:
       $ref: deploy.json
