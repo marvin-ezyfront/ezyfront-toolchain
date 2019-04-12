@@ -1,76 +1,32 @@
 ---
 stages:
-- name: Build & cloudant
+- name: Build Stage
   inputs:
   - type: git
-    branch: ${PROD_SPACE_NAME}
-    service: ${SAMPLE_REPO}
-  triggers:
-  - type: commit
+    branch: ${BRANCH}
+    service: ${REPO}
   jobs:
-  - name: Génération
-    type: shell
-    script: |
-      #!/bin/bash
-
-      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
-      chmod 777 application/*.sh
-
-      application/deploie_application.sh build --espace ${PROD_SPACE_NAME} --pays de
-  - name: MAJ cloudant
-      type: shell
-      script: |
-        #!/bin/bash
-
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
-        chmod 777 application/*.sh
-
-        application/deploie_application.sh cloudant  --espace ${PROD_SPACE_NAME} --pays de
-- name: Déploiement
+  - name: Build
+    type: builder
+    artifact_dir: ''
+- name: Deploy Stage
   inputs:
   - type: job
-    stage: Build & cloudant
-    job: Génération
+    stage: Build Stage
+    job: Build
   triggers:
   - type: stage
-  properties:
-  - name: CF_APP_NAME
-    value: ${PROD_SPACE_NAME}
-    type: text
   jobs:
-  - name: Rolling Deploy
+  - name: Deploy
     type: deployer
     target:
-      region_id: ${PROD_REGION_ID}
-      organization: ${PROD_ORG_NAME}
-      space: ${PROD_SPACE_NAME}
-      application: ${CF_APP_NAME}
+      region_id: ${CF_REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
       api_key: ${API_KEY}
-    script: |
-        #!/bin/bash
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
-        chmod 777 application/*.sh
-
-        application/deploie_application.sh deploy --espace ${PROD_SPACE_NAME} --pays de
-  - name: Test
-    type: tester
-    target:
-      region_id: ${PROD_REGION_ID}
-      organization: ${PROD_ORG_NAME}
-      space: ${PROD_SPACE_NAME}
-      application: ${CF_APP_NAME}
-      api_key: ${API_KEY}
-    script: |
-        #!/bin/bash
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
-        chmod 777 application/*.sh
-
-        application/deploie_application.sh test --espace ${PROD_SPACE_NAME} --pays de
+    script: |-
+      #!/bin/bash
+      cf push "${CF_APP}"
+      # View logs
+      # cf logs "${CF_APP}" --recent

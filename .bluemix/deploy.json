@@ -11,15 +11,15 @@
     },
     "type": "object",
     "properties": {
-        "region": {
+        "dev-region": {
             "description": "The IBM Cloud CF region",
             "type": "string"
         },
-        "organization": {
+        "dev-organization": {
             "description": "The IBM Cloud CF org",
             "type": "string"
         },
-        "space": {
+        "dev-space": {
             "description": "The IBM Cloud CF space",
             "type": "string"
         },
@@ -37,9 +37,9 @@
         }
     },
     "required": [
-        "region",
-        "organization",
-        "space",
+        "dev-region",
+        "dev-organization",
+        "dev-space",
         "app-name",
         "api-key"
     ],
@@ -56,21 +56,21 @@
             },
             "key": "app-name"
         },
-        {
-            "type": "password",
-            "readonly": false,
-            "title": {
-                "$ref": "#/messages/deploy.apiKeyTitle"
-            },
-            "key": "api-key"
+         {
+	        "type": "password",
+	        "readonly": false,
+	        "title": {
+                   "$ref": "#/messages/deploy.apiKeyTitle"
+                },
+	        "key": "api-key"
         },
         {
             "type": "table",
             "columnCount": 3,
             "widths": [
-                "33%",
-                "33%",
-                "33%"
+                "28%",
+                "28%",
+                "28%"
             ],
             "items": [
                 {
@@ -81,7 +81,7 @@
                 },
                 {
                     "type": "label",
-                    "title": {
+                     "title": {
                         "$ref": "#/messages/organization"
                     }
                 },
@@ -93,15 +93,15 @@
                 },
                 {
                     "type": "select",
-                    "key": "region"
+                    "key": "dev-region"
                 },
                 {
                     "type": "select",
-                    "key": "organization"
+                    "key": "dev-organization"
                 },
                 {
                     "type": "select",
-                    "key": "space",
+                    "key": "dev-space",
                     "readonly": false
                 }
             ]
