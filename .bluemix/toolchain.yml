@@ -41,19 +41,17 @@ services:
           REPO: repo
           BRANCH: '{{branch}}'
           CF_APP: '{{form.pipeline.parameters.app-name}}'
-          CF_SPACE: '{{form.pipeline.parameters.dev-space}}'
-          CF_ORGANIZATION: '{{form.pipeline.parameters.dev-organization}}'
-          CF_REGION_ID: '{{form.pipeline.parameters.dev-region}}'
+          CF_SPACE: '{{form.pipeline.parameters.space}}'
+          CF_ORGANIZATION: '{{form.pipeline.parameters.organization}}'
+          CF_REGION_ID: '{{form.pipeline.parameters.region}}'
           API_KEY: '{{form.pipeline.parameters.api-key}}'
         execute: true
-  webide:
-    service_id: orion
 form:
   pipeline:
     parameters:
-      dev-region: ''
-      dev-organization: ''
-      dev-space: ''
+      region: ''
+      organization: ''
+      space: ''
       app-name: '{{services.repo.parameters.repo_name}}'
     schema:
       $ref: deploy.json
