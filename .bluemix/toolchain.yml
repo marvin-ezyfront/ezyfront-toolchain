@@ -12,7 +12,7 @@ template:
     - repo
   info:
     git url: >-
-      [https://github.com/open-toolchain/default-toolchain](https://github.com/open-toolchain/default-toolchain)
+      [https://git.eu-de.bluemix.net/toolchain/war-toolchain-hosted](https://git.eu-de.bluemix.net/toolchain/war-toolchain-hosted)
 toolchain:
   name: '{{baseName}}-{{timestamp}}'
   template:
