@@ -10,7 +10,7 @@ properties:
     value: xxxxxxxxxxxx
     type: secure
 stages:
-- name: Build & cloudant
+- name: "Build & cloudant"
 #  inputs:
 #  - type: git
 #    branch: ${PROD_SPACE_NAME}
@@ -31,16 +31,16 @@ stages:
       application/deploie_application.sh build --espace ${ESPACE} --pays ${PAYS}
 
   - name: MAJ cloudant
-      type: shell
-      script: |
-        #!/bin/bash
+    type: shell
+    script: |
+      #!/bin/bash
 
-        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+      git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+      git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
 
-        chmod 777 application/*.sh
+      chmod 777 application/*.sh
 
-        application/deploie_application.sh cloudant  --espace ${ESPACE} --pays ${PAYS}
+      application/deploie_application.sh cloudant  --espace ${ESPACE} --pays ${PAYS}
 
 - name: Déploiement
   inputs:
