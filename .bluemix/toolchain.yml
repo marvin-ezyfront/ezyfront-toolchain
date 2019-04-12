@@ -40,17 +40,17 @@ services:
           $text: pipeline.yml
         env:
           REPO: repo
-          CF_APP: '{{form.pipeline.parameters.app-name}}'
-          PROD_SPACE_NAME: '{{form.pipeline.parameters.space}}'
-          PROD_ORG_NAME: '{{form.pipeline.parameters.organization}}'
-          PROD_REGION_ID: '{{form.pipeline.parameters.region}}'
+          CF_APP: '{{form.pipeline.parameters.prod-app-name}}'
+          PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
+          PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
+          PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
         execute: true
 form:
   pipeline:
     parameters:
-      region: 'eu-de'
-      organization: 'EZYFRONT_'
-      space: '{{branch}}'
-      app-name: '{{services.repo.parameters.repo_name}}'
+      prod-region: 'eu-de'
+      prod-organization: 'EZYFRONT_'
+      prod-space: '{{branch}}'
+      prod-app-name: '{{services.repo.parameters.repo_name}}'
     schema:
       $ref: deploy.json

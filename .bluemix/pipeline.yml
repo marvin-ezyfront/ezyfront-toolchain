@@ -6,6 +6,9 @@ properties:
   - name: PAYS
     value: 'de'
     type: text
+  - name: TOKEN
+    value: xxxxxxxxxxxx
+    type: secure
 stages:
 - name: Build & cloudant
 #  inputs:
@@ -20,23 +23,25 @@ stages:
     script: |
       #!/bin/bash
 
-      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+      git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+      git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
 
       chmod 777 application/*.sh
 
       application/deploie_application.sh build --espace ${ESPACE} --pays ${PAYS}
+
   - name: MAJ cloudant
       type: shell
       script: |
         #!/bin/bash
 
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
 
         chmod 777 application/*.sh
 
         application/deploie_application.sh cloudant  --espace ${ESPACE} --pays ${PAYS}
+
 - name: Déploiement
   inputs:
   - type: job
@@ -58,12 +63,11 @@ stages:
       application: ${CF_APP_NAME}
     script: |
         #!/bin/bash
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
         chmod 777 application/*.sh
-
         application/deploie_application.sh deploy --espace ${ESPACE} --pays ${PAYS}
+
   - name: Test
     type: tester
     target:
@@ -73,9 +77,7 @@ stages:
       application: ${CF_APP_NAME}
     script: |
         #!/bin/bash
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
-        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
-
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:${TOKEN}@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
         chmod 777 application/*.sh
-
         application/deploie_application.sh test --espace ${ESPACE} --pays ${PAYS}
