@@ -32,12 +32,6 @@
             },
             "type": "string"
         },
-        "api-key": {
-            "description": {
-                "$ref": "#/messages/deploy.apiKeyDescription"
-            },
-            "type": "string"
-        },
         "prod-app-name": {
             "description": {
                 "$ref": "#/messages/deploy.appDescription"
