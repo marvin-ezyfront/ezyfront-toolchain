@@ -15,7 +15,7 @@ template:
     git url: >-
       [https://github.com/marvin-ezyfront/ezyfront-toolchain](https://github.com/marvin-ezyfront/ezyfront-toolchain)
 toolchain:
-  name: 'generic-api-exemple'
+  name: 'generic-api-ardoise'
   template:
     getting_started:
       $ref: '#/messages/template.getting_started'
