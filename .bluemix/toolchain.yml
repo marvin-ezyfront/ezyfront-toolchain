@@ -6,13 +6,14 @@ template:
     $ref: "#/messages/template.name"
   description:
     $ref: "#/messages/template.description"
+  header: '![](toolchain.svg)'
   icon: icon.svg
   required:
-    - build
     - repo
+    - build
   info:
     git url: >-
-      [https://git.eu-de.bluemix.net/toolchain/war-toolchain-hosted](https://git.eu-de.bluemix.net/toolchain/war-toolchain-hosted)
+      [https://github.com/marvin-ezyfront/ezyfront-toolchain](https://github.com/marvin-ezyfront/ezyfront-toolchain)
 toolchain:
   name: '{{baseName}}-{{timestamp}}'
   template:
@@ -23,10 +24,10 @@ services:
     service_id: hostedgit
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: '{{repository}}'
-      type: clone
+      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/'
+      type: link
       has_issues: true
-      enable_traceability: true
+      enable_traceability: false
   build:
     service_id: pipeline
     parameters:
@@ -49,8 +50,8 @@ services:
 form:
   pipeline:
     parameters:
-      region: ''
-      organization: ''
+      region: 'eu-de'
+      organization: 'EZYFRONT_'
       space: ''
       app-name: '{{services.repo.parameters.repo_name}}'
     schema:
