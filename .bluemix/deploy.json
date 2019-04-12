@@ -6,30 +6,21 @@
     "title": {
         "$ref": "#/messages/deploy.title"
     },
-    "description": {
-        "$ref": "#/messages/deploy.description"
-    },
     "longDescription": {
         "$ref": "#/messages/deploy.longDescription"
     },
     "type": "object",
     "properties": {
-        "prod-region": {
-            "description": {
-	       "$ref":"#/messages/deploy.region"
-	    },
+        "region": {
+            "description": "The IBM Cloud CF region",
             "type": "string"
         },
-        "prod-organization": {
-            "description": {
-	       "$ref":"#/messages/deploy.org"
-	    },
+        "organization": {
+            "description": "The IBM Cloud CF org",
             "type": "string"
         },
-        "prod-space": {
-            "description": {
-	       "$ref":"#/messages/deploy.space"
-	    },
+        "space": {
+            "description": "The IBM Cloud CF space",
             "type": "string"
         },
         "api-key": {
@@ -38,19 +29,18 @@
             },
             "type": "string"
         },
-        "prod-app-name": {
+        "app-name": {
             "description": {
                 "$ref": "#/messages/deploy.appDescription"
             },
-            "type": "string",
-            "pattern": "\\S"
+            "type": "string"
         }
     },
     "required": [
-        "prod-region",
-        "prod-organization",
-        "prod-space",
-        "prod-app-name",
+        "region",
+        "organization",
+        "space",
+        "app-name",
         "api-key"
     ],
     "form": [
@@ -64,15 +54,15 @@
             "title": {
                 "$ref": "#/messages/deploy.appName"
             },
-            "key": "prod-app-name"
+            "key": "app-name"
         },
         {
-	        "type": "password",
-	        "readonly": false,
-	        "title": {
-                   "$ref": "#/messages/deploy.apiKeyTitle"
-                },
-	        "key": "api-key"
+            "type": "password",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.apiKeyTitle"
+            },
+            "key": "api-key"
         },
         {
             "type": "table",
@@ -103,15 +93,15 @@
                 },
                 {
                     "type": "select",
-                    "key": "prod-region"
+                    "key": "region"
                 },
                 {
                     "type": "select",
-                    "key": "prod-organization"
+                    "key": "organization"
                 },
                 {
                     "type": "select",
-                    "key": "prod-space",
+                    "key": "space",
                     "readonly": false
                 }
             ]

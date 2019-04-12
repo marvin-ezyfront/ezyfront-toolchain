@@ -1,28 +1,45 @@
 ---
 stages:
-- name: BUILD
+- name: Build & cloudant
   inputs:
   - type: git
-    branch: master
+    branch: ${PROD_SPACE_NAME}
     service: ${SAMPLE_REPO}
   triggers:
   - type: commit
   jobs:
-  - name: Build
-    type: builder
-- name: DEPLOY
+  - name: Génération
+    type: shell
+    script: |
+      #!/bin/bash
+
+      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+      git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+
+      chmod 777 application/*.sh
+
+      application/deploie_application.sh build --espace ${PROD_SPACE_NAME} --pays de
+  - name: MAJ cloudant
+      type: shell
+      script: |
+        #!/bin/bash
+
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+
+        chmod 777 application/*.sh
+
+        application/deploie_application.sh cloudant  --espace ${PROD_SPACE_NAME} --pays de
+- name: Déploiement
   inputs:
   - type: job
-    stage: BUILD
-    job: Build
+    stage: Build & cloudant
+    job: Génération
   triggers:
   - type: stage
   properties:
   - name: CF_APP_NAME
-    value: undefined
-    type: text
-  - name: APP_URL
-    value: undefined
+    value: ${PROD_SPACE_NAME}
     type: text
   jobs:
   - name: Rolling Deploy
@@ -34,30 +51,26 @@ stages:
       application: ${CF_APP_NAME}
       api_key: ${API_KEY}
     script: |
-      #!/bin/bash
-      # Push app
-      if ! cf app $CF_APP; then  
-        cf push $CF_APP
-      else
-        OLD_CF_APP=${CF_APP}-OLD-$(date +"%s")
-        rollback() {
-          set +e  
-          if cf app $OLD_CF_APP; then
-            cf logs $CF_APP --recent
-            cf delete $CF_APP -f
-            cf rename $OLD_CF_APP $CF_APP
-          fi
-          exit 1
-        }
-        set -e
-        trap rollback ERR
-        cf rename $CF_APP $OLD_CF_APP
-        cf push $CF_APP
-        cf delete $OLD_CF_APP -f
-      fi
-      # Export app name and URL for use in later Pipeline jobs
-      export CF_APP_NAME="$CF_APP"
-      export APP_URL=http://$(cf app $CF_APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
-      # View logs
-      #cf logs "${CF_APP}" --recent
-      
+        #!/bin/bash
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+
+        chmod 777 application/*.sh
+
+        application/deploie_application.sh deploy --espace ${PROD_SPACE_NAME} --pays de
+  - name: Test
+    type: tester
+    target:
+      region_id: ${PROD_REGION_ID}
+      organization: ${PROD_ORG_NAME}
+      space: ${PROD_SPACE_NAME}
+      application: ${CF_APP_NAME}
+      api_key: ${API_KEY}
+    script: |
+        #!/bin/bash
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
+        git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/configuration.git
+
+        chmod 777 application/*.sh
+
+        application/deploie_application.sh test --espace ${PROD_SPACE_NAME} --pays de
