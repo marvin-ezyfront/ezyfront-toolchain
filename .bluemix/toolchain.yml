@@ -24,7 +24,7 @@ services:
     service_id: hostedgit
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/'
+      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/{{toolchain.name}}'
       type: link
       has_issues: true
       enable_traceability: false
@@ -42,10 +42,9 @@ services:
           REPO: repo
           BRANCH: '{{branch}}'
           CF_APP: '{{form.pipeline.parameters.app-name}}'
-          CF_SPACE: '{{form.pipeline.parameters.space}}'
-          CF_ORGANIZATION: '{{form.pipeline.parameters.organization}}'
-          CF_REGION_ID: '{{form.pipeline.parameters.region}}'
-          API_KEY: '{{form.pipeline.parameters.api-key}}'
+          PROD_SPACE_NAME: '{{form.pipeline.parameters.space}}'
+          PROD_ORG_NAME: '{{form.pipeline.parameters.organization}}'
+          PROD_REGION_ID: '{{form.pipeline.parameters.region}}'
         execute: true
 form:
   pipeline:

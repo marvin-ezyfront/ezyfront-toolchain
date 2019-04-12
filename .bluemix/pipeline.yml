@@ -4,7 +4,7 @@ stages:
   inputs:
   - type: git
     branch: ${PROD_SPACE_NAME}
-    service: ${SAMPLE_REPO}
+    service: ${REPO}
   triggers:
   - type: commit
   jobs:
@@ -49,7 +49,6 @@ stages:
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
       application: ${CF_APP_NAME}
-      api_key: ${API_KEY}
     script: |
         #!/bin/bash
         git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
@@ -65,7 +64,6 @@ stages:
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
       application: ${CF_APP_NAME}
-      api_key: ${API_KEY}
     script: |
         #!/bin/bash
         git clone https://oauth2:xxxxxxxxxxxx@git.eu-de.bluemix.net/ezyfront-deploiement/application.git
