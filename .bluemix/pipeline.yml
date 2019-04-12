@@ -1,12 +1,19 @@
 ---
+properties:
+  - name: ESPACE
+    value: ${PROD_SPACE_NAME}
+    type: text
+  - name: PAYS
+    value: 'de'
+    type: text
 stages:
 - name: Build & cloudant
-  inputs:
-  - type: git
-    branch: ${PROD_SPACE_NAME}
-    service: ${REPO}
-  triggers:
-  - type: commit
+#  inputs:
+#  - type: git
+#    branch: ${PROD_SPACE_NAME}
+#    service: ${REPO}
+#  triggers:
+#  - type: commit
   jobs:
   - name: Génération
     type: shell
@@ -18,7 +25,7 @@ stages:
 
       chmod 777 application/*.sh
 
-      application/deploie_application.sh build --espace ${PROD_SPACE_NAME} --pays de
+      application/deploie_application.sh build --espace ${ESPACE} --pays ${PAYS}
   - name: MAJ cloudant
       type: shell
       script: |
@@ -29,20 +36,20 @@ stages:
 
         chmod 777 application/*.sh
 
-        application/deploie_application.sh cloudant  --espace ${PROD_SPACE_NAME} --pays de
+        application/deploie_application.sh cloudant  --espace ${ESPACE} --pays ${PAYS}
 - name: Déploiement
   inputs:
   - type: job
-    stage: Build & cloudant
+    stage: "Build & cloudant"
     job: Génération
   triggers:
   - type: stage
-  properties:
-  - name: CF_APP_NAME
-    value: ${PROD_SPACE_NAME}
-    type: text
+#  properties:
+#  - name: CF_APP_NAME
+#    value: ${ESPACE}
+#    type: text
   jobs:
-  - name: Rolling Deploy
+  - name: "Déployement"
     type: deployer
     target:
       region_id: ${PROD_REGION_ID}
@@ -56,7 +63,7 @@ stages:
 
         chmod 777 application/*.sh
 
-        application/deploie_application.sh deploy --espace ${PROD_SPACE_NAME} --pays de
+        application/deploie_application.sh deploy --espace ${ESPACE} --pays ${PAYS}
   - name: Test
     type: tester
     target:
@@ -71,4 +78,4 @@ stages:
 
         chmod 777 application/*.sh
 
-        application/deploie_application.sh test --espace ${PROD_SPACE_NAME} --pays de
+        application/deploie_application.sh test --espace ${ESPACE} --pays ${PAYS}

@@ -15,16 +15,16 @@ template:
     git url: >-
       [https://github.com/marvin-ezyfront/ezyfront-toolchain](https://github.com/marvin-ezyfront/ezyfront-toolchain)
 toolchain:
-  name: '{{baseName}}-{{timestamp}}'
+  name: 'generic-api-exemple'
   template:
     getting_started:
-      $ref: '#/messages/toolchain.getting_started'
+      $ref: '#/messages/template.getting_started'
 services:
   repo:
     service_id: hostedgit
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/{{toolchain.name}}'
+      repo_url: 'https://git.eu-de.bluemix.net/ezyfront/{{services.repo.parameters.repo_name}}'
       type: link
       has_issues: true
       enable_traceability: false
@@ -33,14 +33,13 @@ services:
     parameters:
       services:
         - repo
-      name: '{{toolchain.name}}'
+      name: '{{services.repo.parameters.repo_name}}'
       ui-pipeline: true
       configuration:
         content:
           $text: pipeline.yml
         env:
           REPO: repo
-          BRANCH: '{{branch}}'
           CF_APP: '{{form.pipeline.parameters.app-name}}'
           PROD_SPACE_NAME: '{{form.pipeline.parameters.space}}'
           PROD_ORG_NAME: '{{form.pipeline.parameters.organization}}'
@@ -51,7 +50,7 @@ form:
     parameters:
       region: 'eu-de'
       organization: 'EZYFRONT_'
-      space: ''
+      space: '{{branch}}'
       app-name: '{{services.repo.parameters.repo_name}}'
     schema:
       $ref: deploy.json
